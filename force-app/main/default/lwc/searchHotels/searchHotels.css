@@ -1,0 +1,7 @@
+.city-option {
+    padding: 5px;
+    cursor: pointer;
+}
+.city-option:hover {
+    background-color: #f3f3f3;
+}
