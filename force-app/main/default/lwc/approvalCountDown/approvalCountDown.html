@@ -1,0 +1,29 @@
+<template>
+    <lightning-card title="⏳ Approval Countdown" class="rounded-xl shadow-lg">
+        <div class="slds-p-around_medium slds-text-align_center">
+
+            <!-- Progress Ring -->
+            <lightning-progress-ring
+                value={progressValue}
+                variant={progressVariant}
+                size="large"
+            ></lightning-progress-ring>
+
+            <!-- Time Remaining -->
+            <template if:true={timeRemaining}>
+                <p class="slds-text-heading_medium slds-m-top_medium">
+                    ⏰ {timeRemaining}
+                </p>
+               <lightning-badge class="slds-m-top_small slds-theme_success" label="Active"></lightning-badge>
+            </template>
+
+            <!-- Expired State -->
+            <template if:true={expired}>
+                <p class="slds-text-heading_medium slds-text-color_error slds-m-top_medium">
+                    Approval deadline passed!
+                </p>
+                <lightning-badge class="slds-badge slds-theme_error" variant="inverse" label="Expired"></lightning-badge>
+            </template>
+        </div>
+    </lightning-card>
+</template>
