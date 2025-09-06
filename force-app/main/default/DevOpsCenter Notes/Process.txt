@@ -1,0 +1,8 @@
+// This File Contains process steps to implemenent DevOps Center
+
+1. install managed package for DevOps
+2.create connected app and assign permission set to respecive user
+3.Go to Devops Center app and connect all your environment in pipelines section
+4.Create Work item and PR for review and merge to higher org branch
+5.once your PR is reviewed and then you promote/merged changes to higher org branch then you can run your pipelines
+6. run the pipeline.
