@@ -1,0 +1,24 @@
+<template>
+    <h1>LifeCycle Hooks Demo</h1>
+
+    <lightning-input type="text" label="Name" value={name} onchange={handleNameChange}></lightning-input>
+    <lightning-button label="Search" onclick={handleOnclick}></lightning-button>
+
+    <template if:true={isContactsAvailable}>
+        <template for:each={contacts} for:item="con">
+            <div  key={con.Id}>
+                <lightning-card  variant="Narrow"  title={con.Name} icon-name="standard:account">
+                    <lightning-button-icon  icon-name="utility:down" variant="border-filled" alternative-text="Show More" slot="actions"></lightning-button-icon>
+                    <p class="slds-p-horizontal_small"></p>
+                    <p slot="footer"></p>
+                </lightning-card>
+            </div>
+           
+        </template>
+        
+    </template>
+    <template if:false={isContactsAvailable}>
+        No Records Found
+    </template>
+   
+</template>
