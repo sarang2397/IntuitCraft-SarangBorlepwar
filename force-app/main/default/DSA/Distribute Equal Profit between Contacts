@@ -1,0 +1,73 @@
+Trigger AccountTrigger On Account(after update){
+    switch on Trigger.operationType{
+        when AFTER_UPDATE{
+            AccountTriggerHandler.afterUpdate(trigger.new,trigger.oldMap);
+        }
+    }
+}
+
+
+class AccountTriggerHandler{
+    public static void afterUpdate(List<Account>newAccountList,Map<Id,Account>oldAccountMap){
+        Set<Id> accIds=new Set<Id>();
+        for(Account acc:newAccountList){
+            if(acc.Profit__c!=oldAccountMap.get(acc.Id).Profit__c){
+                accIds.add(acc.Id);
+
+                
+            }
+        }
+
+        if(!accIds.isEmpty()){
+            AccountTriggerHelper.distributeProfit(accIds);
+        }
+
+        
+
+    }
+}
+
+class AccountTriggerHelper{
+
+public static Decimal distributeProfit(Set<Id> accIds){
+
+    Map<Id,Account> accMap=new Map<Id,Account>([SELECT Id, Profit__c FROM Account where Id IN:accIds])
+        List<Contact> conList=[SELECT Id,Profit_Share__c,AccountId FROM Contact WHERE AccountId IN: accIds];
+
+        Map<Id,List<Contact>> acctConMap=new Map<Id,List<Contact>>();
+
+        for(Contact con:conList){
+            if(!acctConMap.containsKey(con.AccountId)){
+                acctConMap.put(con.AccountId,new List<Contact>());
+            }
+
+            acctConMap.get(con.AccountId).add(con);
+        }
+
+
+        for(Id accId:acctConMap.keySet){
+        List<Contact> contacts=acctConMap.get(accId);
+        List<Contact>updatedContacts=new List<Contact>();
+        Decimal profitShare=AccountTriggerHelper.getProfitShare((Decimal)accMap.get(accId).Profit__c,contacts.size())
+
+        for(Contact con: contacts){
+            Contact contact=new Contact();
+            contact.Id=con.Id;
+            contact.Profit_Share__c=profitShare;
+            updatedContacts.add(contact);
+        }
+        }
+
+        if(!updatedContacts.isEmpty()){
+            update updatedContacts;
+        }
+
+}
+
+public static Decimal getProfitShare(Decimal profit,Integer size){
+
+    return (Decimal) profit/size;
+
+}
+    
+}

@@ -1,0 +1,40 @@
+{
+  "name": "Sarang",
+  "age": 30,
+  "interests": ["Salesforce", "Apex"],
+  "address": {
+    "street": "123 Main Street",
+    "city": "Pune",
+    "zip": "411001"
+  }
+}
+
+
+
+
+
+
+Class MyWrapper{
+    String name {get;set;}
+    String age {get:set}
+    String List<String> interests{get;set;}
+    Address address
+
+    public class Address{
+        String street {get;set;}
+        String city  {get;set;}
+        String zip {get;set;}
+    }
+}
+
+
+
+@RestResource(url='/myServices/')
+global class myClass{
+    @httpPost
+    global static String doPost(){
+        ResRequest req=RestContext.request;
+        String body=req.requestBody.toString();
+        MyWrapper wrapper=(MyWrapper) JSON.deserialize(body,MyWrapper.class):
+    }
+}
