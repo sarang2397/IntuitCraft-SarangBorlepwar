@@ -1,0 +1,21 @@
+name : Github Actions - Dev Validate
+run-name: $ {{ github.actor}} is running the Github Actions
+
+on: [push,pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+
+      - name: Build with Gradle
+        run: ./gradlew build
+
+  Clean up:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clean up
+        run: ./gradlew clean
